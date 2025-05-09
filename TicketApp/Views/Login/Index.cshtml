@@ -1,0 +1,94 @@
+﻿@model SignInVM
+@{
+    ViewData["Title"] = "TicketApp - Giriş";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+            .login-container h2 {
+                margin-bottom: 30px;
+                color: #343a40;
+                text-align: center;
+            }
+
+        .form-group label {
+            color: #495057;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #0056b3;
+            }
+
+        .text-danger {
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>NETOVA DESTEK</h2>
+
+        <form asp-action="Index" method="post">
+            <div class="form-group">
+                <label asp-for="emailAddress">Email Adresi</label>
+                <input asp-for="emailAddress" class="form-control" />
+                <span asp-validation-for="emailAddress" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="passwordText">Şifre</label>
+                <input asp-for="passwordText" type="password" class="form-control" />
+                <span asp-validation-for="passwordText" class="text-danger"></span>
+            </div>
+           
+
+            <button type="submit" class="btn btn-primary">Giriş Yap</button>
+        </form>
+
+        <h1 class="text-danger text-center mt-3">@ViewBag.errorText</h1>
+    </div>
+
+    @section Scripts {
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        @*   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script> *@
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</body>
+</html>

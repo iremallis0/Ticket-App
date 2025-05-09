@@ -1,0 +1,70 @@
+﻿ @model TicketApp.Models.TicketComment
+ @using System.Linq
+@{
+    ViewData["Title"] = "Index";
+ }
+
+@{
+     var lastFiveTickets = Model.LastFiveTickets
+
+         .OrderByDescending(t => t.startDate)  // Başlangıç tarihine göre azalan sırada sıralıyoruz
+        .Take(5);  // Son 5 talebi alıyoruz
+    var lastFiveComments = Model.LastFiveComments
+
+    .OrderByDescending(t => t.commentDate)  // Başlangıç tarihine göre azalan sırada sıralıyoruz
+           .Take(5);  // Son 5 talebi alıyoruz
+ 
+
+}
+
+
+
+<h2>Son 5 Talep</h2>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Talep Konusu</th>
+                <th>Başlangıç Tarihi</th>
+                <th>Durum</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ticket in Model.LastFiveTickets)
+            {
+                <tr>
+                    <td>@ticket.subject</td>
+                    <td>@ticket.startDate.ToShortDateString()</td>
+                    <td>@(ticket.state == "0" ? "Havuzda" : ticket.state == "1" ? "İşlemde" : ticket.state == "2" ? "Tamamlandı":"İptal Edildi")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+
+<h2>Son 5 Yorum</h2>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tarih</th>
+                <th>Talep Konusu</th>
+                <th>Yazan</th>
+                <th>Yorum</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var comment in Model.LastFiveComments)
+            {
+                <tr>
+                    <td>@comment.commentDate.ToShortDateString()</td>
+                    <td>@comment.Ticket.subject</td>
+                    <td>@comment.User.firstName @comment.User.lastName</td>
+                    <td>@comment.commentText</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,15 @@
+﻿@model TicketApp.Models.Category
+@{
+    ViewData["Title"] = "Create";
+}
+
+<form asp-action="Store" method="post">
+    <div class="form-group">
+        <label asp-for="categoryName">Kategori Adı</label>
+        <input type="text" class="form-control" asp-for ="categoryName">
+        <span asp-validation-for="categoryName" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+   
+</form>
+

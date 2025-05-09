@@ -1,0 +1,83 @@
+﻿@model TicketApp.Models.User
+@{
+    ViewData["Title"] = "Display";
+}
+
+
+<form asp-action="Update" method="post">
+    <input type="hidden" asp-for="userId" />
+    <div class="form-group">
+        <label asp-for="firstName">Ad</label>
+        <input type="text" class="form-control" asp-for="firstName">
+        <span asp-validation-for="firstName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="lastName">Soyad</label>
+        <input type="text" class="form-control" asp-for="lastName">
+        <span asp-validation-for="lastName" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group ">
+        <label asp-for="userType" class="form-label">Kullanıcı Tipi</label>
+        <select asp-for="userType" class="form-control">
+          @*   <option value="">Seçiniz</option> *@
+            <option value="0">Destek Personeli</option>
+            <option value="1">Müşteri</option>
+            <option value="2">Admin</option>
+            <!-- Diğer durumlar -->
+        </select>
+        <span asp-validation-for="userType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group ">
+        <label asp-for="userActive" class="form-label">Kullanıcı Durumu</label>
+        <select asp-for="userActive" class="form-control">
+            <option value="">Seçiniz</option>
+            <option value="true">Aktif</option>
+            <option value="false">Pasif</option>
+            <!-- Diğer durumlar -->
+        </select>
+        <span asp-validation-for="userType" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="emailAddress">Mail Adresi</label>
+        <input type="email" class="form-control" asp-for="emailAddress">
+        <span asp-validation-for="emailAddress" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="phoneNumber">İletişim Numarası</label>
+        <input type="text" class="form-control" asp-for="phoneNumber">
+        <span asp-validation-for="phoneNumber" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="passwordHash"> Şifre</label>
+        <input type="password" class="form-control" asp-for="passwordHash">
+        <span asp-validation-for="passwordHash" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="companyId">Kullanıcı Firması</label>
+        <select asp-for="companyId" class="form-control">
+            <option value="">Seçiniz</option>
+        @foreach(Company item in ViewBag.companies){
+                if(item.companyId == Model.companyId)
+                {
+                    <option value="@item.companyId" selected="selected">@item.companyName</option>
+                }
+                else
+                {
+                    <option value="@item.companyId">@item.companyName</option>
+                }
+        }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+</form>

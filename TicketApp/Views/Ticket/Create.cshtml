@@ -1,0 +1,180 @@
+﻿@model TicketApp.Models.Ticket
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<form asp-action="Store" method="post">
+
+    <div class="form-group ">
+        <label asp-for="companyId" class="form-label">Firma</label>
+        <select asp-for="companyId" class="form-control">
+            
+            <option value="-1">Seçiniz</option>
+
+             
+            
+            @foreach (Company item in ViewBag.companies)
+            {
+                if (Model != null)
+
+                {
+                    if (item.companyId == Model.companyId)
+                    {
+                        <option value="@item.companyId" selected="selected">@item.companyName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.companyId">@item.companyName</option>
+                    }
+                }
+                else
+                {
+                    <option value="@item.companyId">@item.companyName</option>
+
+                }
+            }
+           
+        </select>
+        <span asp-validation-for="companyId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group ">
+        <label asp-for="userId" class="form-label">Kullanıcılar</label>
+        <select asp-for="userId" class="form-control">
+        </select>
+        <span asp-validation-for="userId" class="text-danger"></span>
+    </div>
+   
+    @section Scripts {
+        <script>
+            $(document).ready(function () {
+                $('#companyId').change(function () {
+                    var companyId = $(this).val();
+                    if (companyId>0) {
+                        $.getJSON('@Url.Action("GetUsersByCompany")', { companyId: companyId }, function (data) {
+                            var userDropdown = $('#userId');
+                            userDropdown.empty();
+                            $.each(data, function (i, user) {
+                                userDropdown.append($('<option>', {
+                                    value: user.value,
+                                    text: user.text
+                                }));
+                            });
+                        });
+                    } else {
+                        $('#userId').empty();
+                    }
+                });
+                
+                  
+            });
+        </script>
+    }
+
+
+    <div class="form-group">
+        <label asp-for="subject">Konu</label>
+        <input type="text" class="form-control" asp-for="subject">
+        <span asp-validation-for="subject" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="detail">Talep Detayı</label>
+        <input type="text" class="form-control" asp-for="detail">
+        <span asp-validation-for="detail" class="text-danger"></span>
+    </div>
+@* 
+    <input type="hidden" asp-for="startDate" value="@DateTime.Now.Date" /> *@
+    <div class="form-group">
+        <label asp-for="startDate" class="form-label">Başlangıç Tarihi</label>
+        <input asp-for="startDate" type="date" class="form-control" />
+        <span asp-validation-for="startDate" class="text-danger"></span>
+    </div>
+ 
+
+   @*  <div class="form-group ">
+        <label asp-for="finishDate" class="form-label">Bitiş Tarihi</label>
+        <input asp-for="finishDate" type="date" class="form-control" />
+        <span asp-validation-for="finishDate" class="text-danger"></span>
+    </div> *@
+    
+    <input type="hidden" asp-for="state" value="0" />
+
+
+
+    <div class="form-group ">
+        <label asp-for="severity" class="form-label">Öncelik Durumu</label>
+        <select asp-for="severity" class="form-control">
+            <option value="0">Düşük</option>
+            <option value="1">Orta</option>
+            <option value="2">Yüksek</option>
+            <!-- Diğer durumlar -->
+        </select>
+        <span asp-validation-for="severity" class="text-danger"></span>
+    </div>
+
+
+
+
+
+
+    <div class="form-group">
+        <label asp-for="categoryId"> Talep Kategorisi</label>
+        <select asp-for="categoryId" class="form-control">
+            @foreach (Category item in ViewBag.categories)
+            {
+                if (Model != null)
+                {
+                    if (item.categoryId == Model.categoryId)
+                    {
+                        <option value="@item.categoryId" selected="selected">@item.categoryName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.categoryId">@item.categoryName</option>
+                    }
+                }
+                else
+                {
+                    <option value="@item.categoryId">@item.categoryName</option>
+
+                }
+            }
+        </select>
+    </div>
+
+   @*  <div class="form-group">
+        <label asp-for="userId"> Talebi oluşturan</label>
+        <select asp-for="userId" class="form-control">
+            @foreach (User item in ViewBag.users)
+            {
+                if (Model != null)
+                {
+                    if (item.userId == Model.userId)
+                    {
+                        <option value="@item.userId" selected="selected">@item.firstName </option>
+                    }
+                    else
+                    {
+                        <option value="@item.userId">@item.firstName  </option>
+                    }
+                }
+                else
+                {
+                    <option value="@item.userId">@item.firstName </option>
+
+                }
+            }
+        </select>
+    </div>
+ *@
+   
+ 
+
+
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+</form>
+
+

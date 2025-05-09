@@ -1,0 +1,17 @@
+﻿@model TicketApp.Models.Company
+@{
+    var type = Convert.ToInt32(ViewContext.HttpContext.Session.GetString("userType"));
+    ViewData["Title"] = "Create";
+}
+@if (type == 2)
+{
+    <form asp-action="Store" method="post">
+        <div class="form-group">
+            <label asp-for="companyName">Firma Adı</label>
+            <input type="text" class="form-control" asp-for="companyName">
+            <span asp-validation-for="companyName" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Kaydet</button>
+
+    </form>
+}

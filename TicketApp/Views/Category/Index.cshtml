@@ -1,0 +1,60 @@
+﻿@model List<TicketApp.Models.Category>;
+
+@{
+    ViewData["Title"] = "Index";
+    if (TempData["message"] != null)
+    {
+        if (TempData["message"].Equals("DeleteRecordExists"))
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Hata!</strong> İlişkili bir kullanıcı bulunduğundan kaydınız silinemedi.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+        }
+        else if (TempData["message"].Equals("DeleteSuccess"))
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Başarılı!</strong> Kaydınız başarıyla silinmiştir.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+        }
+        else
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Hata!</strong> Bir hatayla karşılaşıldı.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    }
+}
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Kategori</th>
+                <th width="10%">Düzenle</th>
+                <th width="10%">Sil</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.categoryName
+                    </td>
+                    <td class="text-center" width="10%">
+                        <a href="/category/display/@item.categoryId"><i class="menu-icon mdi mdi-lead-pencil"></i></a>
+                    </td>
+                    <td class="text-center" width="10%">
+                        <a href="/category/delete/@item.categoryId" onclick="return confirm('Bu kaydı silmek istediğinize emin misiniz?');"><i class="menu-icon mdi mdi-delete"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

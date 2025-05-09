@@ -1,0 +1,166 @@
+﻿ @model TicketApp.Models.TicketComment
+
+@{
+    ViewData["Title"] = "Display";
+}
+
+
+<form asp-action="Update" method="post">
+    <input type="hidden" asp-for="Ticket.ticketId" />
+    <input type="hidden" asp-for="Ticket.companyId" />
+    <input type="hidden" asp-for="Ticket.userId" />
+
+    <div class="form-group">
+        <label>Firma</label>
+        <input type="text" class="form-control" value="@Model.Ticket.Company.companyName" disabled>
+    </div>
+
+    <div class="form-group">
+        <label>Kullanıcı</label>
+        <input type="text" class="form-control" value="@Model.Ticket.User.firstName @Model.Ticket.User.lastName" disabled>
+    </div>
+
+
+
+    <div class="form-group">
+        <label asp-for="Ticket.subject">Konu</label>
+        <input type="text" class="form-control" asp-for="Ticket.subject">
+        <span asp-validation-for="Ticket.subject" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Ticket.detail">Talep Detayı</label>
+        <input type="text" class="form-control" asp-for="Ticket.detail">
+        <span asp-validation-for="Ticket.detail" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="Ticket.startDate" class="form-label">Başlangıç Tarihi</label>
+        <input asp-for="Ticket.startDate" type="date" class="form-control" />
+        <span asp-validation-for="Ticket.startDate" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group ">
+        <label asp-for="Ticket.finishDate" class="form-label">Bitiş Tarihi</label>
+        <input asp-for="Ticket.finishDate" type="date" class="form-control" />
+        <span asp-validation-for="Ticket.finishDate" class="text-danger"></span>
+    </div>
+
+  @*   <input type="hidden" asp-for="Ticket.state" value="Havuzda" /> *@
+
+
+         <div class="form-group ">
+        <label asp-for="Ticket.state" class="form-label">Talep Durumu</label>
+        <select asp-for="Ticket.state" class="form-control">
+    <option value="0">Havuzda</option>
+    <option value="1">İşlemde</option>
+    <option value="2">Tamamlandı</option>
+    <option value="3">İptal Et</option>
+    <!-- Diğer durumlar -->
+    </select>
+        <span asp-validation-for="Ticket.state" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group ">
+        <label asp-for="Ticket.severity" class="form-label">Öncelik Durumu</label>
+        <select asp-for="Ticket.severity" class="form-control">
+            <option value="0">Düşük</option>
+            <option value="1">Orta</option>
+            <option value="2">Yüksek</option>
+            <!-- Diğer durumlar -->
+        </select>
+        <span asp-validation-for="Ticket.severity" class="text-danger"></span>
+    </div>
+
+
+
+
+
+
+    <div class="form-group">
+        <label asp-for="Ticket.categoryId"> Talep Kategorisi</label>
+        <select asp-for="Ticket.categoryId" class="form-control">
+            @foreach (Category item in ViewBag.categories)
+            {
+                if (Model != null)
+                {
+                    if (item.categoryId == Model.Ticket.categoryId)
+                    {
+                        <option value="@item.categoryId" selected="selected">@item.categoryName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.categoryId">@item.categoryName</option>
+                    }
+                }
+                else
+                {
+                    <option value="@item.categoryId">@item.categoryName</option>
+
+                }
+            }
+        </select>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+</form>
+
+ <form asp-action="ticketAdd">
+    <input type="hidden" asp-for="Ticket.ticketId" />
+    <input type="hidden" asp-for="Comment.commentId" />
+    <input type="hidden" asp-for="Comment.commentDate" value="@DateTime.Now" />
+    <br />
+    <p></p>
+    <div class="form-group">
+        <label asp-for="Comment.commentText">Yorum Ekle</label>
+       @*  <input type="text" class="form-control" style="width: 100%; height: 150px; box-sizing: border-box;" asp-for="Comment.commentText"> *@
+        <textarea class="form-control" style="width: 100%; height: 150px; padding: 0.5rem; box-sizing: border-box;" asp-for="Comment.commentText"></textarea>
+        <span asp-validation-for="Comment.commentText" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-dark">Ekle</button>
+    </form>
+ 
+
+ <br />
+ <p>Talep Yorumları</p>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tarih</th>
+                <th>Yazan</th>
+                <th>Talep Yorumu</th>
+                <th width="10%">Sil</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Ticket.Comments)
+            {
+                <tr>
+                    <td>
+                        @item.commentDate
+                    </td>
+                    <td>
+                        @item.User.firstName @item.User.lastName
+                    </td>
+                    <td>
+                        @item.commentText
+                    </td>
+                    <td class="text-center" width="10%">
+                        <a href="/ticket/ticketDelete/@item.commentId" onclick="return confirm('Bu kaydı silmek istediğinize emin misiniz?');"><i class="menu-icon mdi mdi-delete"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+
+

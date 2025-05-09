@@ -1,0 +1,77 @@
+﻿@model List<TicketApp.Models.Ticket>;
+
+    
+   @{
+    var lastFiveTickets = Model
+
+        .OrderByDescending(t => t.startDate)  // Başlangıç tarihine göre azalan sırada sıralıyoruz
+        .Take(5);  // Son 5 talebi alıyoruz
+}
+
+    
+@{
+    ViewData["Title"] = "Index";
+    if (TempData["message"] != null)
+    {
+        if (TempData["message"].Equals("DeleteRecordExists"))
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Hata!</strong> İlişkili bir yorum bulunduğundan kaydınız silinemedi.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+        }
+        else if (TempData["message"].Equals("DeleteSuccess"))
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Başarılı!</strong> Kaydınız başarıyla silinmiştir.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+        }
+        else
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Hata!</strong> Bir hatayla karşılaşıldı.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    }
+}
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Talep Konusu</th>
+                <th>Firma</th>
+                <th>Talep Açılış Tarihi</th>
+                <th >Talep Durumu</th>
+                <th width="10%">Sil</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in lastFiveTickets)
+            {
+                <tr>
+                    <td>
+                        <a href="/ticket/display/@item.ticketId">  @item.subject</a>
+                    </td>
+                    <td>
+                        @item.Company.companyName
+                    </td>
+                    <td>
+                        @item.startDate
+                    </td>     
+                    <td>
+                        @(item.state == "0" ? "Havuzda" : item.state == "1" ? "İşlemde" : item.state == "2" ? "Tamamlandı" : "İptal Edildi")
+                    </td>                   
+                   <td class="text-center" width="10%">
+                        <a href="/ticket/delete/@item.ticketId" onclick="return confirm('Bu kaydı silmek istediğinize emin misiniz?');"><i class="menu-icon mdi mdi-delete"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

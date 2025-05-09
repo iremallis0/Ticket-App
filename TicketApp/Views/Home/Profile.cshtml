@@ -1,0 +1,86 @@
+﻿ @model TicketApp.Models.UserUpdate
+@{
+    ViewData["Title"] = "Profile";
+    if (TempData["message"] != null)
+    {
+        if (TempData["message"].Equals("ChangePasswordFail"))
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Hata!</strong> Parola değiştirilemedi.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+        }
+        else if (TempData["message"].Equals("ChangePasswordSuccess"))
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Başarılı!</strong> Parola başarıyla değiştirildi.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+        }
+        else
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Hata!</strong> Bir hatayla karşılaşıldı.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    }
+}
+
+<h2>Profil Bilgileri</h2>
+<form asp-action="UpdateUser" method="post">
+    <input type="hidden" asp-for="User.userId" />
+
+    <div class="form-group">
+        <label asp-for="User.firstName">Ad</label>
+        <input type="text" class="form-control" asp-for="User.firstName">
+        <span asp-validation-for="User.firstName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="User.lastName">Soyad</label>
+        <input type="text" class="form-control" asp-for="User.lastName">
+        <span asp-validation-for="User.lastName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="User.phoneNumber">İletişim Numarası</label>
+        <input type="text" class="form-control" asp-for="User.phoneNumber">
+        <span asp-validation-for="User.phoneNumber" class="text-danger"></span>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+
+</form>
+<br />
+<br />
+<h2>Şifre Yenileme</h2>
+<form asp-action="ChangePassword" method="post">
+    <div class="form-group">
+        <label asp-for="ChangePasswordVM.currentPassword">Eski Şifre</label>
+        <input type="password" asp-for="ChangePasswordVM.currentPassword" class="form-control" />
+        <span asp-validation-for="ChangePasswordVM.currentPassword" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ChangePasswordVM.newPassword">Yeni Şifre</label>
+        <input type="password" asp-for="ChangePasswordVM.newPassword" class="form-control" />
+        <span asp-validation-for="ChangePasswordVM.newPassword" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ChangePasswordVM.confirmNewPassword">Yeni Şifre Tekrar</label>
+        <input type="password" asp-for="ChangePasswordVM.confirmNewPassword" class="form-control" />
+        <span asp-validation-for="ChangePasswordVM.confirmNewPassword" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Şifreyi Güncelle</button>
+</form>
+
+
+
+
+
+
